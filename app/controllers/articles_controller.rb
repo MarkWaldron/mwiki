@@ -30,10 +30,16 @@ class ArticlesController < ApplicationController
   end
 
   def destroy
+    if @article.user == current_user
+      @article.destroy
+      redirect_to root_path
+    else
+      redirect_to root_path
+    end
   end
 
   def update
-    if @article.update(article_params)
+    if @article.update(article_params) && @article.user == current_user
       redirect_to @article
     else
       render 'edit'
